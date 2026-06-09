@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Interativo de Cookies</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🍪 Tutorial Interativo de Cookies</h1>
+            <p class="subtitle">Aprenda como os cookies funcionam na prática com exemplos interativos</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Seção 1: O que são Cookies -->
+            <section class="card intro-card">
+                <h2>📚 O que são Cookies?</h2>
+                <p>Cookies são pequenos arquivos de texto armazenados no navegador do cliente. Eles permitem que websites "lembrem" informações sobre o usuário.</p>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Tamanho:</strong> ~4KB por cookie
+                    </div>
+                    <div class="info-item">
+                        <strong>Limite:</strong> ~180 cookies por site
+                    </div>
+                    <div class="info-item">
+                        <strong>Acesso:</strong> Apenas via JavaScript ou cabeçalho HTTP
+                    </div>
+                    <div class="info-item">
+                        <strong>Segurança:</strong> Visíveis ao cliente (não criptografados por padrão)
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 2: Exemplo Prático - Preferências de Usuário -->
+            <section class="card">
+                <h2>🎨 Exemplo 1: Preferências de Usuário</h2>
+                <p class="section-description">Teste como cookies salvam suas preferências:</p>
+                
+                <div class="example-box">
+                    <div class="preference-group">
+                        <label>👤 Seu Nome:</label>
+                        <input type="text" id="userName" placeholder="Digite seu nome" class="input-field">
+                        <button class="btn btn-save" onclick="salvarPreferencias()">💾 Salvar Nome</button>
+                    </div>
+
+                    <div class="preference-group">
+                        <label>🎨 Tema Favorito:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="tema" value="claro" onchange="salvarPreferencias()">
+                                ☀️ Claro
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="tema" value="escuro" onchange="salvarPreferencias()">
+                                🌙 Escuro
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="preference-group">
+                        <label>🌐 Idioma:</label>
+                        <select id="idioma" onchange="salvarPreferencias()" class="input-field">
+                            <option value="pt">🇧🇷 Português</option>
+                            <option value="en">🇺🇸 Inglês</option>
+                            <option value="es">🇪🇸 Espanhol</option>
+                        </select>
+                    </div>
+
+                    <button class="btn btn-secondary" onclick="carregarPreferencias()">🔄 Carregar Preferências</button>
+                </div>
+
+                <div class="result-box" id="resultado1" style="display:none;">
+                    <h3>✅ Preferências Salvas!</h3>
+                    <p id="resultadoTexto1"></p>
+                </div>
+            </section>
+
+            <!-- Seção 3: Contador de Visitas -->
+            <section class="card">
+                <h2>📊 Exemplo 2: Contador de Visitas</h2>
+                <p class="section-description">Veja como cookies podem contar quantas vezes você visita uma página:</p>
+                
+                <div class="example-box">
+                    <div class="counter-display" id="visitCounter">👁️ Visitas: 0</div>
+                    <p class="counter-text">Recarregue a página ou feche e abra novamente. O número continuará aumentando!</p>
+                    <button class="btn btn-reset" onclick="resetarContador()">↻ Resetar Contador</button>
+                </div>
+
+                <div class="result-box" id="resultado2" style="display:none;">
+                    <h3>✅ Contador Resetado!</h3>
+                    <p id="resultadoTexto2"></p>
+                </div>
+            </section>
+
+            <!-- Seção 4: Gerenciador de Cookies -->
+            <section class="card">
+                <h2>⚙️ Exemplo 3: Criar e Gerenciar Cookies</h2>
+                <p class="section-description">Crie seus próprios cookies manualmente:</p>
+                
+                <div class="example-box">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cookie Name:</label>
+                            <input type="text" id="cookieName" placeholder="Ex: favorito" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Cookie Value:</label>
+                            <input type="text" id="cookieValue" placeholder="Ex: pizza" class="input-field">
+                        </div>
+                        <div class="form-group">
+                            <label>Dias até expirar:</label>
+                            <input type="number" id="cookieExpiry" value="30" min="0" class="input-field" style="width: 100px;">
+                        </div>
+                    </div>
+                    <button class="btn btn-create" onclick="criarCookiePersonalizado()">➕ Criar Cookie</button>
+                </div>
+            </section>
+
+            <!-- Seção 5: Listagem de Cookies -->
+            <section class="card">
+                <h2>📋 Cookies Armazenados</h2>
+                <p class="section-description">Todos os cookies do site:</p>
+                
+                <div class="cookies-container" id="cookiesContainer">
+                    <p class="empty-message">Nenhum cookie armazenado ainda</p>
+                </div>
+                <button class="btn btn-secondary" onclick="atualizarListaCookies()">🔄 Atualizar Lista</button>
+                <button class="btn btn-danger" onclick="limparTodosCookies()">🗑️ Limpar Tudo</button>
+            </section>
+
+            <!-- Seção 6: Código JavaScript -->
+            <section class="card code-card">
+                <h2>💻 Código JavaScript Explicado</h2>
+                
+                <div class="code-section">
+                    <h3>1️⃣ Criar um Cookie</h3>
+                    <pre><code>function setCookie(nome, valor, dias) {
+    let data = new Date();
+    data.setTime(data.getTime() + (dias * 24 * 60 * 60 * 1000));
+    let expira = "expires=" + data.toUTCString();
+    document.cookie = nome + "=" + valor + ";" + expira + ";path=/";
+}</code></pre>
+                </div>
+
+                <div class="code-section">
+                    <h3>2️⃣ Ler um Cookie</h3>
+                    <pre><code>function getCookie(nome) {
+    let nomeComIgual = nome + "=";
+    let cookies = document.cookie.split(';');
+    for(let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(nomeComIgual) === 0) {
+            return cookie.substring(nomeComIgual.length);
+        }
+    }
+    return null;
+}</code></pre>
+                </div>
+
+                <div class="code-section">
+                    <h3>3️⃣ Deletar um Cookie</h3>
+                    <pre><code>function deleteCookie(nome) {
+    setCookie(nome, "", -1);
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Seção 7: Dicas de Segurança -->
+            <section class="card warning-card">
+                <h2>⚠️ Dicas de Segurança</h2>
+                <ul class="security-list">
+                    <li><strong>Não armazene dados sensíveis:</strong> Senhas, tokens, dados bancários não devem ir em cookies simples</li>
+                    <li><strong>Use HTTPS:</strong> Sempre transmita cookies via conexão segura</li>
+                    <li><strong>HttpOnly flag:</strong> Em cookies servidor, use a flag HttpOnly para evitar acesso via JavaScript</li>
+                    <li><strong>SameSite:</strong> Proteja contra ataques CSRF usando o atributo SameSite</li>
+                    <li><strong>Expiração:</strong> Sempre defina uma data de expiração apropriada</li>
+                </ul>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🍪 Tutorial Interativo de Cookies - Use o console (F12) para ver os detalhes dos cookies</p>
+        </footer>
+    </div>
+    <p id="assinatura">Ass: Flávio G. Selau</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
